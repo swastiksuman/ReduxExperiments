@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Square from './Square';
 
 const Board = () => {
     const [state, setState] = React.useState(Array(9).fill(null));
     const [currentPlayer, setCurrentPlayer] = React.useState('X');
+    const [winner, setWinner] = React.useState(null);
 
     const handleClick = (index) => {
         const squares = state.slice();
@@ -12,7 +13,8 @@ const Board = () => {
         checkWinner();
         setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
     };
-
+    useEffect(() => {
+    }, [state]);
     const checkWinner = () => {
         const winnerLogic  = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8], // horizontal
@@ -22,6 +24,7 @@ const Board = () => {
         for (let logic of winnerLogic) {
             const [a, b, c] = logic;
             if (state[a] != null && state[a] === state[b] && state[a] === state[c]) {
+                setWinner(currentPlayer);
                 return console.log(`${state[a]} is the winner`);
             }
         }
@@ -43,6 +46,8 @@ const Board = () => {
                 <Square onClick={()=>handleClick(7)} value={state[7]}></Square>
                 <Square onClick={()=>handleClick(8)} value={state[8]}></Square>
             </div>
+            
+             <div>{winner} is the winner.</div>
         </div>
     );
 };
